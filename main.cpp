@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <pthread.h>
 const int num=100000000;
-const int Thread_num=8;
+const int Thread_num=5;
 using namespace std;
 struct ThreadArgs{
     vector<int>*a;
@@ -60,15 +60,14 @@ void* Quicksort(void*example){
         Quicksort(ileft);
         Quicksort(iright);
     }
-    // pthread_create(&right_thread,NULL,Quicksort,static_cast<void*>(iright));
-    // pthread_join(left_thread,NULL);
-    // pthread_join(right_thread,NULL);
+
     if(left_thread_created){
         pthread_join(left_thread,NULL);
     }
     if(right_thread_created){
         pthread_join(right_thread,NULL);
     }
+
     delete temp;
     return nullptr;
 }
@@ -80,21 +79,6 @@ void GenerateRandomNumber(vector<int>&arr){
         i=dis(gen);
     }
 }
-// vector<vector<int>> CutArrays(vector<int>&arr,int j){
-//     vector<vector<int>> result;
-//     if (j <= 0 || arr.empty()) return result;
-//     int n=arr.size();
-//     int base_size=n/j;
-//     int remainder=n%j;
-//     int start=0;
-//     for(int i=0;i<j;i++){
-//         int end=start+base_size+(i<remainder?1:0);
-//         end=min(end,n);
-//         result.emplace_back(arr.begin()+start,arr.begin()+end);
-//         start=end;
-//     }
-//     return result;
-// }
 int main(){
     vector<int> arr(num);
     GenerateRandomNumber(arr);
@@ -103,31 +87,11 @@ int main(){
     pthread_create(&main_thread, NULL, Quicksort, mainArgs);
     pthread_join(main_thread,NULL);
     delete(mainArgs);
-    // int a=Thread_num;
-    // while(a>=1){
-    //     vector<vector<int>> subarray=CutArrays(arr,a);
-    //     if (subarray.empty()) break; 
-    //     vector<pthread_t> pthreadset(subarray.size());
-    //     vector<ThreadArgs*> Args;
-    //     for(int i=0;i<a;i++){
-    //         Args.push_back(new ThreadArgs(&subarray[i],0,subarray[i].size()-1));
-    //     }
-    //     for(int i=0;i<a;i++){
-    //         pthread_create(&pthreadset[i],NULL,Quicksort,Args[i]);
-    //     }
-    //     for(int i=0;i<a;i++){
-    //         pthread_join(pthreadset[i],NULL);
-    //         delete Args[i];
-    //     }
-    //     for(int o=1;o<subarray.size();o++){
-    //         subarray.insert(subarray.end(),make_move_iterator(subarray[o].begin()),make_move_iterator(subarray[o].end()));
-    //     }
-    //     arr=subarray[0];
-    //     a/=2;
-    // }
+    
     for(int i : arr){
         cout<<i<<" ";
     }
+
     cout<<endl;
     return 0;
 }
