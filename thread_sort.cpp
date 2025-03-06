@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <pthread.h>
 const int num=100000000;
-const int Thread_num=5;
+const int Thread_num=12;
 using namespace std;
 struct ThreadArgs{
     vector<int>*a;
@@ -71,6 +71,7 @@ void* Quicksort(void*example){
     delete temp;
     return nullptr;
 }
+
 void GenerateRandomNumber(vector<int>&arr){
     random_device rd;
     mt19937 gen(rd());
@@ -79,6 +80,7 @@ void GenerateRandomNumber(vector<int>&arr){
         i=dis(gen);
     }
 }
+
 int main(){
     vector<int> arr(num);
     GenerateRandomNumber(arr);
@@ -88,10 +90,10 @@ int main(){
     pthread_join(main_thread,NULL);
     delete(mainArgs);
     
-    for(int i : arr){
-        cout<<i<<" ";
-    }
+    // for(int i : arr){
+    //     cout<<i<<" ";
+    // }
 
-    cout<<endl;
+    // cout<<endl;
     return 0;
 }
