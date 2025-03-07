@@ -9,17 +9,21 @@ using namespace std;
 const int MAX_NUM=10;
 queue<function<void()>> workqueue;
 
-pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t  cond_work=PTHREAD_COND_INITIALIZER;
+// pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+// pthread_cond_t  cond_work=PTHREAD_COND_INITIALIZER;
 // pthread_cond_t  cond_finish=PTHREAD_COND_INITIALIZER;
 
 class thread_pool{
-    pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-    pthread_cond_t  cond_work=PTHREAD_COND_INITIALIZER;
+    public:
+    bool stop;
+    vector<int> working;
+    vector<pthread_t> pthread_num;
+    pthread_mutex_t mutex ;
+    pthread_cond_t  cond_work;
     public:
     thread_pool(){
-        vector<int> working(MAX_NUM);
-        vector<pthread_t> pthread_num(MAX_NUM);
+        working.reserve(MAX_NUM);
+        pthread_num.reserve(MAX_NUM);
         stop=false;
         for(int i=0;i<MAX_NUM;i++){
             pthread_create(&pthread_num[i],NULL,
@@ -50,36 +54,23 @@ class thread_pool{
         return ;
     }
     public:
-    bool stop;
-    vector<int> working;
-    vector<pthread_t> pthread_num;
+    void push_task(function<void()> task){
+        pthread_mutex_lock(&mutex);
+        workqueue.push(task);
+        pthread_cond_signal(&cond_work);
+        pthread_mutex_unlock(&mutex);
+    }
 };
 
-void push_task(function<void()> task){
-    pthread_mutex_lock(&mutex);
-    workqueue.push(task);
-    pthread_cond_signal(&cond_work);
-    pthread_mutex_unlock(&mutex);
-}
+
 
 void test(){
     cout<<"helloworld"<<endl;
 }
+
 int main(){
     thread_pool hahaha;
-    push_task(test);
-    push_task(test);
-    push_task(test);
-    push_task(test);
-    push_task(test);
-    push_task(test);
-    push_task(test);
-    push_task(test);
-    push_task(test);
-    push_task(test);
-    push_task(test);
-    push_task(test);
-    push_task(test);
-    push_task(test);
-    return 0;
+    hahaha.push_task(test);
+    hahaha.push_task(test);
+    return 0;  
 }
