@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cmath>
 #include <future>
 #include <iostream>
@@ -8,7 +9,7 @@
 #include <queue>
 #include <functional>
 using namespace std;
-const int MAX_NUM=10;
+const int MAX_NUM=12;
 
 
 class thread_pool{
@@ -100,12 +101,42 @@ vector<int> cal_num(int n){
 
 int main(){
     thread_pool hahaha;
-    vector<int> result(1000);
-    future<vector<int>>result1 = hahaha.push_task([](){return cal_num(100);});
-    result=result1.get();
-    for(int i=result.size()-1;i>=0;i--){
-        cout<<result[i];
+    vector<vector<int>> result;
+    future<vector<int>>result1 = hahaha.push_task([](){return cal_num(11100);});
+
+    future<vector<int>>result2 = hahaha.push_task([](){return cal_num(11190);});
+
+    future<vector<int>>result3 = hahaha.push_task([](){return cal_num(11188);});
+
+    future<vector<int>>result4 = hahaha.push_task([](){return cal_num(11167);});
+
+    future<vector<int>>result5 = hahaha.push_task([](){return cal_num(11187);});
+
+    future<vector<int>>result6 = hahaha.push_task([](){return cal_num(11195);});
+
+    future<vector<int>>result7 = hahaha.push_task([](){return cal_num(11166);});
+
+    future<vector<int>>result8 = hahaha.push_task([](){return cal_num(11196);});
+
+    future<vector<int>>result9 = hahaha.push_task([](){return cal_num(11179);});
+
+    result.push_back(result1.get());
+    result.push_back(result2.get());
+    result.push_back(result3.get());
+    result.push_back(result4.get());
+    result.push_back(result5.get());
+    result.push_back(result6.get());
+    result.push_back(result7.get());
+    result.push_back(result8.get());
+    result.push_back(result9.get());
+
+    for(int i=0;i<result.size();i++){
+        reverse(result[i].begin(),result[i].end());
+        for(int j : result[i]){
+            cout<<j;
+        }
+        cout<<endl<<endl;
     }
-    cout<<endl;
+    
     return 0;  
 }
