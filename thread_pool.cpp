@@ -78,6 +78,7 @@ class thread_pool{
 
         pthread_cond_signal(&cond_work);
         pthread_mutex_unlock(&mutex);
+        
         return result;
     }
 };
