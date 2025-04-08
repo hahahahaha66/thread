@@ -6,7 +6,7 @@
 #include <iostream>
 #include <random>
 #include <iostream>
-#include <pthread.h>
+#include <thread>
 #include <queue>
 #include <unistd.h>
 
